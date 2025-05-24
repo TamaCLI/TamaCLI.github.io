@@ -2,7 +2,7 @@
     background-color: #1a1a1a;
     border-radius: 10px;
     padding: 20px;
-    font-family: 'Fira Code', 'Courier New', monospace;
+    font-family: 'Fira Code', 'Menlo', 'Monaco', monospace;
     height: 400px;
     display: flex;
     flex-direction: column;
@@ -32,29 +32,33 @@
     color: #f0f0f0;
     white-space: pre-wrap;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-family: 'Menlo', 'Monaco', monospace;
 }
 
 .prompt-line {
     display: flex;
     align-items: center;
     padding: 5px 0;
-    color: #77ddff;
+    color: #f0f0f0;
+    font-family: 'Menlo', 'Monaco', monospace;
 }
 
 .prompt {
-    color: #77ddff;
-    margin-right: 10px;
+    color: #f0f0f0;
+    margin-right: 5px;
+    white-space: pre;
 }
 
 .terminal-input {
     background: transparent;
     border: none;
     color: #f0f0f0;
-    font-family: inherit;
+    font-family: 'Menlo', 'Monaco', monospace;
     font-size: 14px;
     flex-grow: 1;
     outline: none;
+    caret-color: #f0f0f0;
 }
 
 /* Custom scrollbar */
@@ -76,7 +80,7 @@
     background: #555;
 }
 
-/* Animation for typing */
+/* Animation for cursor */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }

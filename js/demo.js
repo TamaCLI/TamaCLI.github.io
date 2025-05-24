@@ -2,9 +2,10 @@ class TamaCliDemo {
     constructor(container) {
         this.container = container;
         this.mood = 100;
-        this.hunger = 50;
+        this.hunger = 5;
         this.health = 100;
-        this.name = "Pet";
+        this.username = 'cardiffemde';
+        this.hostname = 'Cardiffs-MacBook-air';
         this.lastCommand = '';
         this.commandHistory = [];
         this.historyIndex = 0;
@@ -18,7 +19,7 @@ class TamaCliDemo {
             this.hunger = Math.max(0, this.hunger - 1);
             this.updateMood();
             this.updatePrompt();
-        }, 3000);
+        }, 5000);
     }
 
     createTerminal() {
@@ -86,8 +87,8 @@ class TamaCliDemo {
     }
 
     executeCommand(command, args) {
-        this.lastCommand = command;
-        this.addToOutput(`$ ${command} ${args.join(' ')}`.trim());
+        const fullCommand = `${command} ${args.join(' ')}`.trim();
+        this.addToOutput(`${this.getPromptText()}${fullCommand}`);
 
         // Remove 'tamacli' from the start of the command if present
         if (command.startsWith('tamacli ')) {
@@ -116,7 +117,6 @@ class TamaCliDemo {
         }
 
         // Try full command string match
-        const fullCommand = `${command} ${args.join(' ')}`.trim();
         if (commands[fullCommand]) {
             commands[fullCommand]();
             return;
@@ -137,48 +137,59 @@ Available commands:
         `);
     }
 
+    getMoodText() {
+        if (this.mood > 80) return 'happy';
+        if (this.mood > 60) return 'good';
+        if (this.mood > 40) return 'meh';
+        if (this.mood > 20) return 'hungry';
+        return 'starving';
+    }
+
+    getMoodEmoji() {
+        if (this.mood > 80) return '😸';
+        if (this.mood > 60) return '😺';
+        if (this.mood > 40) return '😿';
+        if (this.mood > 20) return '😾';
+        return '🙀';
+    }
+
+    getPromptText() {
+        const emoji = this.getMoodEmoji();
+        const moodText = this.getMoodText();
+        return `${this.username}@${this.hostname} ${emoji} ${moodText} ~ % `;
+    }
+
     feed() {
-        if (this.hunger >= 100) {
-            this.addToOutput(`🤢 ${this.name} is too full!`);
-            this.mood -= 10;
-            this.health = Math.max(0, this.health - 5);
-        } else {
-            this.hunger = Math.min(100, this.hunger + 30);
-            this.mood = Math.min(100, this.mood + 10);
-            this.addToOutput(`😋 Yum yum! ${this.name} enjoys the food!`);
-        }
+        const oldHunger = this.hunger;
+        this.hunger = Math.min(10, this.hunger + 3);
+        this.mood = Math.min(100, this.mood + 10);
+        this.addToOutput(`😋 You fed your Tama! Hunger is now ${this.hunger}.`);
         this.updateMood();
     }
 
     status() {
-        const moodEmoji = this.getMoodEmoji();
-        this.addToOutput(`
-${this.name}'s Status:
-  Mood: ${moodEmoji} ${this.mood}%
-  Hunger: 🍖 ${this.hunger}%
-  Health: ❤️ ${this.health}%
-        `);
-    }
-
-    setName(newName) {
-        if (!newName) {
-            this.addToOutput('Please provide a name for your pet: tamacli name <pet-name>');
-            return;
-        }
-        const oldName = this.name;
-        this.name = newName.charAt(0).toUpperCase() + newName.slice(1);
-        this.addToOutput(`✨ Your pet's name has been changed from ${oldName} to ${this.name}!`);
-        this.mood = Math.min(100, this.mood + 5);
-        this.updateMood();
+        const moodText = this.getMoodText();
+        const emoji = this.getMoodEmoji();
+        this.addToOutput(`${emoji} Your Tama is ${moodText}! Hunger level: ${this.hunger}/10`);
     }
 
     doctor() {
         if (this.health >= 100) {
-            this.addToOutput(`🌟 ${this.name} is already in perfect health!`);
+            this.addToOutput(`🌟 Your Tama is already healthy!`);
         } else {
-            this.health = Math.min(100, this.health + 30);
-            this.addToOutput(`💊 The doctor helped ${this.name} feel better!`);
+            this.health = 100;
+            this.addToOutput(`💊 The doctor helped your Tama feel better!`);
         }
+        this.updateMood();
+    }
+
+    setName(newName) {
+        if (!newName) {
+            this.addToOutput('Please provide a name for your Tama: tamacli name <name>');
+            return;
+        }
+        this.addToOutput(`✨ Your Tama's name has been set to ${newName}!`);
+        this.mood = Math.min(100, this.mood + 5);
         this.updateMood();
     }
 
@@ -187,19 +198,12 @@ ${this.name}'s Status:
     }
 
     updateMood() {
-        if (this.hunger < 30) {
-            this.mood = Math.max(0, this.mood - 5);
+        if (this.hunger < 3) {
+            this.mood = Math.max(0, this.mood - 10);
             this.health = Math.max(0, this.health - 2);
         }
         this.mood = Math.max(0, Math.min(100, this.mood));
-    }
-
-    getMoodEmoji() {
-        if (this.mood > 80) return '😊';
-        if (this.mood > 60) return '🙂';
-        if (this.mood > 40) return '😐';
-        if (this.mood > 20) return '😟';
-        return '😢';
+        this.updatePrompt();
     }
 
     addToOutput(text) {
@@ -210,7 +214,6 @@ ${this.name}'s Status:
     }
 
     updatePrompt() {
-        const emoji = this.getMoodEmoji();
-        this.prompt.textContent = `${emoji} ${this.name} ~ `;
+        this.prompt.textContent = this.getPromptText();
     }
 } 
