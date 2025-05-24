@@ -1,52 +1,151 @@
+:root {
+    --primary: #ff77aa;
+    --secondary: #77ddff;
+    --bg-dark: #1e1e1e;
+    --text-light: #f0f0f0;
+    --border-radius: 16px;
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #1e1e1e;
-    color: #f0f0f0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     margin: 0;
     padding: 0;
+    line-height: 1.6;
 }
 
 header {
-    background-color: #ff77aa;
-    padding: 20px;
+    background: linear-gradient(135deg, var(--primary), #ff9988);
+    padding: 40px 20px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: var(--bg-dark);
+    border-radius: 50% 50% 0 0;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.5em;
+    font-size: 3.5em;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+header p {
+    font-size: 1.2em;
+    margin: 10px 0 0;
+    opacity: 0.9;
 }
 
 main {
-    max-width: 800px;
+    max-width: 900px;
     margin: 30px auto;
     padding: 20px;
 }
 
+section {
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 40px;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: var(--primary);
+    font-size: 2em;
+    margin-top: 0;
+}
+
 img {
     width: 100%;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     margin: 20px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
-section {
-    margin-bottom: 30px;
+img:hover {
+    transform: scale(1.02);
 }
 
-a.button {
+.button {
     display: inline-block;
-    background-color: #77ddff;
-    color: #000;
-    padding: 12px 20px;
-    border-radius: 8px;
+    background: linear-gradient(135deg, var(--secondary), #88ffdd);
+    color: var(--bg-dark);
+    padding: 15px 30px;
+    border-radius: 25px;
     text-decoration: none;
     font-weight: bold;
     margin: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(119, 221, 255, 0.2);
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(119, 221, 255, 0.4);
+}
+
+.button:active {
+    transform: translateY(1px);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 15px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+li::before {
+    content: '🌟';
+    position: absolute;
+    left: 0;
+    animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 footer {
     text-align: center;
-    margin: 40px 0;
+    margin: 60px 0 40px;
     font-size: 0.9em;
     color: #aaa;
+    padding: 20px;
+}
+
+/* Add some fun hover effects to emojis */
+h2 emoji {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+h2:hover emoji {
+    transform: rotate(15deg) scale(1.2);
 } 
