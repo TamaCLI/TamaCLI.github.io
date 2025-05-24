@@ -4,8 +4,8 @@ class TamaCliDemo {
         this.mood = 100;
         this.hunger = 5;
         this.health = 100;
-        this.username = 'cardiffemde';
-        this.hostname = 'Cardiffs-MacBook-air';
+        this.username = this.getSystemUsername();
+        this.hostname = this.getSystemHostname();
         this.lastCommand = '';
         this.commandHistory = [];
         this.historyIndex = 0;
@@ -20,6 +20,52 @@ class TamaCliDemo {
             this.updateMood();
             this.updatePrompt();
         }, 5000);
+    }
+
+    getSystemUsername() {
+        // Try to get a reasonable username from browser data
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('mac')) {
+            return 'user';  // Default Mac-style username
+        } else if (userAgent.includes('win')) {
+            return 'User';  // Default Windows-style username
+        } else {
+            return 'user';  // Default Linux-style username
+        }
+    }
+
+    getSystemHostname() {
+        const platform = navigator.platform;
+        const userAgent = navigator.userAgent.toLowerCase();
+        let deviceType = '';
+        
+        // Detect device type
+        if (userAgent.includes('mac')) {
+            if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+                deviceType = userAgent.includes('ipad') ? 'iPad' : 'iPhone';
+            } else {
+                deviceType = 'MacBook';
+                // Try to detect if it's an Air/Pro/etc
+                if (platform.includes('MacIntel')) {
+                    if (userAgent.includes('macbook air')) {
+                        deviceType += '-Air';
+                    } else if (userAgent.includes('macbook pro')) {
+                        deviceType += '-Pro';
+                    }
+                }
+            }
+        } else if (userAgent.includes('win')) {
+            deviceType = 'PC';
+        } else if (userAgent.includes('linux')) {
+            deviceType = 'Linux';
+        } else if (userAgent.includes('android')) {
+            deviceType = 'Android';
+        } else {
+            deviceType = 'Computer';
+        }
+
+        // Generate a hostname similar to real system hostnames
+        return `${deviceType}-${Math.floor(Math.random() * 900 + 100)}`;
     }
 
     createTerminal() {
