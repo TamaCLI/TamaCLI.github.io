@@ -87,26 +87,42 @@ class TamaCliDemo {
 
     executeCommand(command, args) {
         this.lastCommand = command;
-        this.addToOutput(`$ tamacli ${command} ${args.join(' ')}`.trim());
+        this.addToOutput(`$ ${command} ${args.join(' ')}`.trim());
+
+        // Remove 'tamacli' from the start of the command if present
+        if (command.startsWith('tamacli ')) {
+            const parts = command.split(' ');
+            command = parts[1];
+            args = parts.slice(2);
+        }
 
         const commands = {
             'help': () => this.showHelp(),
-            'feed': () => this.feed(),
-            'status': () => this.status(),
-            'name': (newName) => this.setName(newName),
-            'doctor': () => this.doctor(),
+            'tamacli feed': () => this.feed(),
+            'tamacli status': () => this.status(),
+            'tamacli name': (newName) => this.setName(newName),
+            'tamacli doctor': () => this.doctor(),
             'clear': () => this.clear()
         };
 
+        // Try exact command match first
         if (commands[command]) {
-            if (command === 'name') {
+            if (command === 'tamacli name') {
                 commands[command](args[0]);
             } else {
                 commands[command]();
             }
-        } else {
-            this.addToOutput('Command not found. Type "help" for available commands.');
+            return;
         }
+
+        // Try full command string match
+        const fullCommand = `${command} ${args.join(' ')}`.trim();
+        if (commands[fullCommand]) {
+            commands[fullCommand]();
+            return;
+        }
+
+        this.addToOutput('Command not found. Type "help" for available commands.');
     }
 
     showHelp() {

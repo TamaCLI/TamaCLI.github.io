@@ -32,12 +32,15 @@ header::after {
     height: 100px;
     background: var(--bg-dark);
     border-radius: 50% 50% 0 0;
+    z-index: 1;
 }
 
 header h1 {
     margin: 0;
     font-size: 3.5em;
     animation: float 6s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
 }
 
 @keyframes float {
@@ -49,6 +52,9 @@ header p {
     font-size: 1.2em;
     margin: 10px 0 0;
     opacity: 0.9;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 30px;
 }
 
 main {
