@@ -69,8 +69,36 @@ class TamaCliDemo {
     }
 
     createTerminal() {
+        // Create container for terminal and message
+        const container = document.createElement('div');
+        container.className = 'terminal-container';
+        
         this.terminal = document.createElement('div');
         this.terminal.className = 'terminal';
+        
+        // Create closed message
+        const closedMessage = document.createElement('div');
+        closedMessage.className = 'closed-message';
+        closedMessage.textContent = 'you closed it. what did you expect... goofy';
+        
+        // Create terminal header with window controls
+        const header = document.createElement('div');
+        header.className = 'terminal-header';
+        
+        // Create window control buttons
+        const closeBtn = document.createElement('div');
+        closeBtn.className = 'window-control close';
+        closeBtn.addEventListener('click', () => this.closeTerminal());
+        
+        const minimizeBtn = document.createElement('div');
+        minimizeBtn.className = 'window-control minimize';
+        
+        const maximizeBtn = document.createElement('div');
+        maximizeBtn.className = 'window-control maximize';
+        
+        header.appendChild(closeBtn);
+        header.appendChild(minimizeBtn);
+        header.appendChild(maximizeBtn);
         
         this.output = document.createElement('div');
         this.output.className = 'terminal-output';
@@ -90,10 +118,13 @@ class TamaCliDemo {
         this.promptLine.appendChild(this.prompt);
         this.promptLine.appendChild(this.input);
         
+        this.terminal.appendChild(header);
         this.terminal.appendChild(this.output);
         this.terminal.appendChild(this.promptLine);
         
-        this.container.appendChild(this.terminal);
+        container.appendChild(this.terminal);
+        container.appendChild(closedMessage);
+        this.container.appendChild(container);
         
         // Event listeners
         this.input.addEventListener('keydown', (e) => this.handleInput(e));
@@ -101,6 +132,14 @@ class TamaCliDemo {
         
         // Focus input on load
         this.input.focus();
+    }
+
+    closeTerminal() {
+        this.terminal.classList.add('closing');
+        const closedMessage = this.terminal.parentNode.querySelector('.closed-message');
+        setTimeout(() => {
+            closedMessage.classList.add('visible');
+        }, 300);
     }
 
     handleInput(e) {
@@ -262,4 +301,4 @@ Available commands:
     updatePrompt() {
         this.prompt.textContent = this.getPromptText();
     }
-} 
+}
