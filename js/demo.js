@@ -88,13 +88,16 @@ class TamaCliDemo {
         // Create window control buttons
         const closeBtn = document.createElement('div');
         closeBtn.className = 'window-control close';
+        closeBtn.title = 'Close';
         closeBtn.addEventListener('click', () => this.closeTerminal());
         
         const minimizeBtn = document.createElement('div');
         minimizeBtn.className = 'window-control minimize';
+        minimizeBtn.title = 'Minimize';
         
         const maximizeBtn = document.createElement('div');
         maximizeBtn.className = 'window-control maximize';
+        maximizeBtn.title = 'Maximize';
         
         header.appendChild(closeBtn);
         header.appendChild(minimizeBtn);
@@ -118,17 +121,25 @@ class TamaCliDemo {
         this.promptLine.appendChild(this.prompt);
         this.promptLine.appendChild(this.input);
         
+        // Important: Add header before other elements
+        container.appendChild(this.terminal);
         this.terminal.appendChild(header);
         this.terminal.appendChild(this.output);
         this.terminal.appendChild(this.promptLine);
-        
-        container.appendChild(this.terminal);
         container.appendChild(closedMessage);
+        
+        // Replace any existing content
+        this.container.innerHTML = '';
         this.container.appendChild(container);
         
         // Event listeners
         this.input.addEventListener('keydown', (e) => this.handleInput(e));
-        this.terminal.addEventListener('click', () => this.input.focus());
+        this.terminal.addEventListener('click', (e) => {
+            // Only focus input if not clicking on window controls
+            if (!e.target.classList.contains('window-control')) {
+                this.input.focus();
+            }
+        });
         
         // Focus input on load
         this.input.focus();
