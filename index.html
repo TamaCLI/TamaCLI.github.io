@@ -2,53 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TamaCLI - Terminal Pet</title>
+    <title>TamaCLI 🐣</title>
     <style>
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #0d0d0d;
-            color: #00ff99;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff77aa;
+            padding: 20px;
             text-align: center;
-            padding: 2rem;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
         }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+        main {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
         }
-        .button {
+        img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+        a.button {
             display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background-color: #00ff99;
-            color: #0d0d0d;
-            text-decoration: none;
+            background-color: #77ddff;
+            color: #000;
+            padding: 12px 20px;
             border-radius: 8px;
+            text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #00cc7a;
         }
         footer {
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            color: #666;
+            text-align: center;
+            margin: 40px 0;
+            font-size: 0.9em;
+            color: #aaa;
         }
     </style>
 </head>
 <body>
-    <h1>TamaCLI</h1>
-    <p>Your nostalgic terminal pet, living right inside your command line!</p>
-    <a href="#" class="button">Download Now</a>
-    <p>or</p>
-    <a href="#" class="button">View on GitHub</a>
+    <header>
+        <h1>TamaCLI 🐣</h1>
+        <p>Your terminal just got a lot cuter!</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>🐾 What is TamaCLI?</h2>
+            <p>TamaCLI is a playful, terminal-based pet inspired by Tamagotchi. It lives inside your prompt, gets hungry over time, and needs you to care for it with commands like <code>tamacli feed</code>.</p>
+        </section>
+
+        <section>
+            <h2>💻 Demo</h2>
+            <img src="https://github.com/user-attachments/assets/7ffcb00e-b07c-4cd3-ae61-dbedb2dc3e11" alt="TamaCLI Demo Screenshot">
+        </section>
+
+        <section>
+            <h2>✨ Features</h2>
+            <ul>
+                <li>Lives inside your terminal</li>
+                <li>Tracks mood + hunger</li>
+                <li>Feed it to keep it happy</li>
+                <li>More features coming soon!</li>
+            </ul>
+        </section>
+
+        <section style="text-align: center;">
+            <a class="button" href="https://github.com/Cardsea/tamacli" target="_blank">⭐ Check it out on GitHub</a>
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; 2025 TamaCLI Project. Stay nostalgic, stay hacker-friendly!</p>
+        <p>Not affiliated with Tamagotchi or Bandai. Just for fun 💕</p>
     </footer>
 </body>
 </html>
