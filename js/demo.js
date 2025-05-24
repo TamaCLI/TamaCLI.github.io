@@ -4,6 +4,7 @@ class TamaCliDemo {
         this.mood = 100;
         this.hunger = 50;
         this.health = 100;
+        this.name = "Pet";
         this.lastCommand = '';
         this.commandHistory = [];
         this.historyIndex = 0;
@@ -57,11 +58,13 @@ class TamaCliDemo {
 
     handleInput(e) {
         if (e.key === 'Enter') {
-            const command = this.input.value.trim().toLowerCase();
+            const fullCommand = this.input.value.trim().toLowerCase();
+            const [command, ...args] = fullCommand.split(' ');
+            
             if (command) {
-                this.commandHistory.push(command);
+                this.commandHistory.push(fullCommand);
                 this.historyIndex = this.commandHistory.length;
-                this.executeCommand(command);
+                this.executeCommand(command, args);
                 this.input.value = '';
             }
         } else if (e.key === 'ArrowUp') {
@@ -82,22 +85,25 @@ class TamaCliDemo {
         }
     }
 
-    executeCommand(command) {
+    executeCommand(command, args) {
         this.lastCommand = command;
-        this.addToOutput(`$ ${command}`);
+        this.addToOutput(`$ tamacli ${command} ${args.join(' ')}`.trim());
 
         const commands = {
             'help': () => this.showHelp(),
             'feed': () => this.feed(),
             'status': () => this.status(),
-            'pet': () => this.pet(),
-            'heal': () => this.heal(),
-            'play': () => this.play(),
+            'name': (newName) => this.setName(newName),
+            'doctor': () => this.doctor(),
             'clear': () => this.clear()
         };
 
         if (commands[command]) {
-            commands[command]();
+            if (command === 'name') {
+                commands[command](args[0]);
+            } else {
+                commands[command]();
+            }
         } else {
             this.addToOutput('Command not found. Type "help" for available commands.');
         }
@@ -106,24 +112,24 @@ class TamaCliDemo {
     showHelp() {
         this.addToOutput(`
 Available commands:
-  help   - Show this help message
-  feed   - Feed your pet
-  status - Check pet's status
-  pet    - Pet your companion
-  heal   - Heal your pet
-  play   - Play with your pet
-  clear  - Clear terminal
+  tamacli feed    - Feed your pet when they're hungry
+  tamacli status  - Check your pet's current status
+  tamacli name    - Give your pet a new name
+  tamacli doctor  - Call the doctor when your pet is sick
+  help            - Show this help message
+  clear           - Clear terminal
         `);
     }
 
     feed() {
         if (this.hunger >= 100) {
-            this.addToOutput('🤢 Your pet is too full!');
+            this.addToOutput(`🤢 ${this.name} is too full!`);
             this.mood -= 10;
+            this.health = Math.max(0, this.health - 5);
         } else {
             this.hunger = Math.min(100, this.hunger + 30);
             this.mood = Math.min(100, this.mood + 10);
-            this.addToOutput('😋 Yum yum! Your pet enjoys the food!');
+            this.addToOutput(`😋 Yum yum! ${this.name} enjoys the food!`);
         }
         this.updateMood();
     }
@@ -131,37 +137,31 @@ Available commands:
     status() {
         const moodEmoji = this.getMoodEmoji();
         this.addToOutput(`
-Status:
+${this.name}'s Status:
   Mood: ${moodEmoji} ${this.mood}%
   Hunger: 🍖 ${this.hunger}%
   Health: ❤️ ${this.health}%
         `);
     }
 
-    pet() {
-        this.mood = Math.min(100, this.mood + 15);
-        this.addToOutput('😊 Your pet feels loved!');
+    setName(newName) {
+        if (!newName) {
+            this.addToOutput('Please provide a name for your pet: tamacli name <pet-name>');
+            return;
+        }
+        const oldName = this.name;
+        this.name = newName.charAt(0).toUpperCase() + newName.slice(1);
+        this.addToOutput(`✨ Your pet's name has been changed from ${oldName} to ${this.name}!`);
+        this.mood = Math.min(100, this.mood + 5);
         this.updateMood();
     }
 
-    heal() {
+    doctor() {
         if (this.health >= 100) {
-            this.addToOutput('🌟 Your pet is already in perfect health!');
+            this.addToOutput(`🌟 ${this.name} is already in perfect health!`);
         } else {
             this.health = Math.min(100, this.health + 30);
-            this.addToOutput('💊 Your pet feels better!');
-        }
-        this.updateMood();
-    }
-
-    play() {
-        if (this.hunger < 30) {
-            this.addToOutput('😴 Your pet is too hungry to play!');
-            this.mood -= 10;
-        } else {
-            this.hunger = Math.max(0, this.hunger - 20);
-            this.mood = Math.min(100, this.mood + 20);
-            this.addToOutput('🎾 Your pet had fun playing!');
+            this.addToOutput(`💊 The doctor helped ${this.name} feel better!`);
         }
         this.updateMood();
     }
@@ -173,6 +173,7 @@ Status:
     updateMood() {
         if (this.hunger < 30) {
             this.mood = Math.max(0, this.mood - 5);
+            this.health = Math.max(0, this.health - 2);
         }
         this.mood = Math.max(0, Math.min(100, this.mood));
     }
@@ -194,6 +195,6 @@ Status:
 
     updatePrompt() {
         const emoji = this.getMoodEmoji();
-        this.prompt.textContent = `${emoji} ready ~ `;
+        this.prompt.textContent = `${emoji} ${this.name} ~ `;
     }
 } 
