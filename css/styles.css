@@ -140,6 +140,37 @@ footer {
     padding: 20px;
 }
 
+/* Demo tips section */
+.demo-tips {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-tips p {
+    margin: 0 0 10px 0;
+    color: var(--secondary);
+}
+
+.demo-tips ul {
+    margin: 0;
+}
+
+.demo-tips li {
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
 /* Add some fun hover effects to emojis */
 h2 emoji {
     display: inline-block;
